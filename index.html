@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -7,6 +8,502 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://use.typekit.net/ymx2fhp.css">
+<style>
+  :root{--obsidian:#0D0D0D;--crimson:#8B1A1A;--crimson-mid:#C0392B;--crimson-glow:#E84040;--gold:#C9A84C;--gold-light:#F0D08A;--off-white:#F2F0EB;--muted:#8A8880;--card-bg:#161412;--card-border:#2A2725;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--obsidian);color:var(--off-white);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden;}
+  .tab-nav{position:sticky;top:0;z-index:100;background:#0A0808;border-bottom:1px solid var(--card-border);display:flex;align-items:center;padding:0 60px;}
+  .tab-btn{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;padding:18px 28px;color:var(--muted);cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;transition:all 0.2s;position:relative;top:1px;}
+  .tab-btn:hover{color:var(--off-white);}
+  .tab-btn.active{color:var(--off-white);border-bottom-color:var(--crimson-mid);}
+  .tab-btn.active.gold-tab{border-bottom-color:var(--gold);color:var(--gold);}
+  .tab-content{display:none;}
+  .tab-content.active{display:block;}
+  .tab-divider{width:1px;height:20px;background:var(--card-border);margin:0 8px;}
+  .campaign-header{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:80px 60px 60px;overflow:hidden;background:#0A0808;}
+  .campaign-header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 60% 30%,rgba(139,26,26,0.18) 0%,transparent 70%);pointer-events:none;}
+  .campaign-header::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--crimson-mid),transparent);}
+  .header-eyebrow{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.2em;color:var(--crimson-glow);text-transform:uppercase;margin-bottom:28px;}
+  .header-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(120px,22vw,220px);letter-spacing:-2px;line-height:0.85;color:var(--off-white);position:relative;z-index:1;}
+  .header-title span.accent{color:var(--crimson-glow);}
+  .header-subtitle-row{display:flex;align-items:flex-end;justify-content:space-between;margin-top:40px;padding-top:24px;border-top:1px solid var(--card-border);gap:40px;flex-wrap:wrap;}
+  .header-author{font-family:'Space Mono',monospace;font-size:13px;color:var(--muted);letter-spacing:0.1em;}
+  .header-author strong{color:var(--off-white);font-weight:700;display:block;font-size:16px;margin-bottom:4px;}
+  .header-badges{display:flex;gap:12px;flex-wrap:wrap;}
+  .badge{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;padding:5px 12px;border:1px solid var(--card-border);color:var(--muted);}
+  .badge.hot{border-color:var(--crimson-mid);color:var(--crimson-glow);}
+  .badge.gold-badge{border-color:var(--gold);color:var(--gold);}
+  .container{max-width:1200px;margin:0 auto;padding:0 60px;}
+  section{padding:80px 0;}
+  .section-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--crimson-mid);margin-bottom:12px;}
+  .section-title{font-family:'Bebas Neue',sans-serif;font-size:52px;letter-spacing:2px;line-height:1;color:var(--off-white);margin-bottom:40px;}
+  .divider{height:1px;background:var(--card-border);margin:0 60px;}
+  .assessment-strip{background:#100C0B;border-top:1px solid var(--crimson-mid);border-bottom:1px solid var(--card-border);padding:40px 60px;}
+  .assessment-strip .strip-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.25em;color:var(--gold);text-transform:uppercase;margin-bottom:20px;}
+  .assessment-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--card-border);}
+  .assessment-cell{background:#100C0B;padding:28px 24px;}
+  .assessment-cell .cell-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;}
+  .assessment-cell.green .cell-label{color:#4CAF50;}
+  .assessment-cell.yellow .cell-label{color:var(--gold);}
+  .assessment-cell p{font-size:13px;line-height:1.6;color:var(--muted);}
+  .assessment-cell p strong{color:var(--off-white);font-weight:500;}
+  .card{background:var(--card-bg);border:1px solid var(--card-border);padding:32px;}
+  .card-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .card-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .card-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;}
+  .card h3{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;color:var(--off-white);margin-bottom:12px;}
+  .card p{font-size:14px;line-height:1.7;color:var(--muted);}
+  .card p strong{color:var(--off-white);font-weight:500;}
+  .stat-number{font-family:'Bebas Neue',sans-serif;font-size:64px;letter-spacing:1px;line-height:1;color:var(--off-white);}
+  .stat-unit{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.15em;color:var(--crimson-mid);margin-top:4px;text-transform:uppercase;}
+  .platform-row{display:flex;align-items:center;padding:16px 0;border-bottom:1px solid var(--card-border);gap:20px;}
+  .platform-row:last-child{border-bottom:none;}
+  .platform-name{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);width:160px;flex-shrink:0;}
+  .platform-bar-wrap{flex:1;height:6px;background:#2A2725;overflow:hidden;}
+  .platform-bar-fill{height:100%;background:var(--crimson-mid);}
+  .platform-bar-fill.gold{background:var(--gold);}
+  .platform-count{font-family:'Space Mono',monospace;font-size:12px;color:var(--off-white);font-weight:700;width:80px;text-align:right;}
+  .billboard-section{background:#0A0808;border-top:1px solid var(--crimson-mid);border-bottom:1px solid var(--crimson-mid);padding:80px 60px;position:relative;overflow:hidden;}
+  .billboard-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 50%,rgba(139,26,26,0.12) 0%,transparent 70%);}
+  .billboard-mockup{background:#F7F4EF;border:3px solid #D4B896;border-radius:4px;aspect-ratio:14/4.8;display:flex;align-items:center;justify-content:center;flex-direction:column;position:relative;overflow:hidden;max-width:900px;margin:40px auto;box-shadow:0 8px 40px rgba(0,0,0,0.3);}
+  .billboard-word{font-family:"abolition",sans-serif;font-weight:400;font-style:normal;font-size:clamp(60px,11vw,130px);letter-spacing:8px;color:#B8872E;line-height:1;position:relative;z-index:1;}
+  .billboard-byline{font-family:'Space Mono',monospace;font-size:clamp(9px,1.2vw,14px);letter-spacing:0.4em;color:#1A1410;margin-top:12px;text-transform:uppercase;position:relative;z-index:1;}
+  .billboard-release{font-family:'Space Mono',monospace;font-size:clamp(8px,1vw,11px);letter-spacing:0.3em;color:#5C4A2A;margin-top:8px;text-transform:uppercase;position:relative;z-index:1;}
+  .billboard-legs{display:flex;gap:60px;justify-content:center;margin:0 auto;}
+  .billboard-leg{width:8px;height:40px;background:#8C7355;}
+  .billboard-market-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--card-border);max-width:900px;margin:40px auto 0;}
+  .billboard-market{background:var(--card-bg);padding:20px 24px;}
+  .billboard-market .market-city{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:var(--off-white);margin-bottom:4px;}
+  .billboard-market .market-city.primary{color:var(--crimson-glow);}
+  .billboard-market .market-detail{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);line-height:1.7;}
+  .billboard-market .market-type{display:inline-block;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;padding:2px 8px;border:1px solid var(--card-border);color:var(--muted);margin-top:8px;}
+  .billboard-market .market-type.primary-tag{border-color:var(--crimson-mid);color:var(--crimson-glow);}
+  .billboard-budget-row{display:flex;align-items:center;justify-content:space-between;max-width:900px;margin:32px auto 0;padding:24px;border:1px solid var(--card-border);background:var(--card-bg);}
+  .budget-item{text-align:center;}
+  .budget-item .b-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+  .budget-item .b-value{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;color:var(--off-white);}
+  .budget-item .b-value.accent{color:var(--gold);}
+  .timeline{position:relative;padding-left:48px;}
+  .timeline::before{content:'';position:absolute;left:8px;top:8px;bottom:8px;width:1px;background:var(--card-border);}
+  .tl-item{position:relative;margin-bottom:36px;}
+  .tl-dot{position:absolute;left:-44px;top:6px;width:10px;height:10px;border:2px solid var(--card-border);background:var(--obsidian);border-radius:50%;}
+  .tl-dot.active{border-color:var(--crimson-mid);background:var(--crimson-mid);box-shadow:0 0 12px rgba(192,57,43,0.5);}
+  .tl-dot.billboard-dot{border-color:var(--gold);background:var(--gold);box-shadow:0 0 12px rgba(201,168,76,0.5);width:14px;height:14px;left:-46px;top:4px;}
+  .tl-date{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.15em;color:var(--crimson-mid);text-transform:uppercase;margin-bottom:6px;}
+  .tl-date.gold-date{color:var(--gold);}
+  .tl-title{font-family:'DM Sans',sans-serif;font-weight:500;font-size:15px;color:var(--off-white);margin-bottom:6px;}
+  .tl-body{font-size:13px;color:var(--muted);line-height:1.6;}
+  .tl-body strong{color:var(--off-white);font-weight:500;}
+  .tl-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+  .tl-tag{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:2px 8px;border:1px solid var(--card-border);color:var(--muted);}
+  .tl-tag.gold-tag{border-color:var(--gold);color:var(--gold);}
+  .tl-tag.red-tag{border-color:var(--crimson-mid);color:var(--crimson-glow);}
+  .tier-stack{display:flex;flex-direction:column;gap:1px;}
+  .tier{background:var(--card-bg);border:1px solid var(--card-border);padding:28px 32px;display:flex;align-items:flex-start;gap:24px;}
+  .tier.featured{border-color:var(--gold);background:#151210;}
+  .tier-num{font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:1px;color:var(--card-border);line-height:1;flex-shrink:0;}
+  .tier.featured .tier-num{color:var(--gold);}
+  .tier-content{flex:1;}
+  .tier-copies{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+  .tier.featured .tier-copies{color:var(--gold);}
+  .tier-title{font-family:'DM Sans',sans-serif;font-weight:500;font-size:17px;color:var(--off-white);margin-bottom:8px;}
+  .tier-desc{font-size:13px;color:var(--muted);line-height:1.6;}
+  .tier-desc strong{color:var(--off-white);font-weight:500;}
+  .influencer-tier-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--card-border);margin-top:24px;}
+  .inf-cell{background:var(--card-bg);padding:28px;}
+  .inf-cell .tier-badge{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;padding:3px 10px;border:1px solid var(--card-border);display:inline-block;margin-bottom:16px;}
+  .inf-cell.macro .tier-badge{border-color:var(--crimson-mid);color:var(--crimson-glow);}
+  .inf-cell.mid .tier-badge{border-color:var(--gold);color:var(--gold);}
+  .inf-cell.micro .tier-badge{border-color:#5A9A5A;color:#7ABF7A;}
+  .inf-cell .range{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:1px;color:var(--off-white);line-height:1;margin-bottom:8px;}
+  .inf-cell .inf-purpose{font-size:12px;color:var(--muted);line-height:1.6;}
+  .release-week{background:var(--crimson);padding:60px;position:relative;overflow:hidden;}
+  .release-week::before{content:'RELEASE';position:absolute;right:-20px;top:-20px;font-family:'Bebas Neue',sans-serif;font-size:180px;letter-spacing:8px;color:rgba(255,255,255,0.04);white-space:nowrap;pointer-events:none;}
+  .release-week .rw-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(242,240,235,0.6);margin-bottom:20px;}
+  .release-week h2{font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:2px;color:var(--off-white);margin-bottom:32px;}
+  .rw-tactics{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;position:relative;z-index:1;}
+  .rw-tactic{background:rgba(0,0,0,0.25);padding:20px 24px;border-left:3px solid rgba(242,240,235,0.3);}
+  .rw-tactic .tactic-name{font-weight:500;font-size:14px;color:var(--off-white);margin-bottom:4px;}
+  .rw-tactic .tactic-desc{font-size:12px;color:rgba(242,240,235,0.6);line-height:1.5;}
+  .rw-target{display:flex;align-items:baseline;gap:12px;margin-top:32px;}
+  .rw-target .target-num{font-family:'Bebas Neue',sans-serif;font-size:80px;line-height:1;color:var(--off-white);}
+  .rw-target .target-detail{font-size:14px;color:rgba(242,240,235,0.7);line-height:1.5;}
+  .rw-target .target-detail strong{color:var(--off-white);display:block;font-size:18px;font-weight:500;}
+  .contact-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--card-border);}
+  .contact-cell{background:var(--card-bg);padding:28px 32px;}
+  .contact-cell .c-role{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--crimson-mid);margin-bottom:8px;}
+  .contact-cell .c-name{font-family:'DM Sans',sans-serif;font-weight:500;font-size:18px;color:var(--off-white);margin-bottom:4px;}
+  .contact-cell .c-email{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:0.05em;margin-bottom:12px;}
+  .contact-cell .c-note{font-size:13px;color:var(--muted);line-height:1.6;}
+  footer{padding:60px;border-top:1px solid var(--card-border);display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+  footer .footer-brand{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--muted);}
+  footer .footer-meta{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);text-align:right;line-height:1.8;}
+  .callout{border-left:3px solid var(--crimson-mid);padding:20px 24px;background:#110E0D;margin:24px 0;}
+  .callout p{font-size:14px;color:var(--muted);line-height:1.7;}
+  .callout p strong{color:var(--off-white);font-weight:500;}
+  .callout.gold-callout{border-color:var(--gold);}
+  .callout.gold-callout p strong{color:var(--gold-light);}
+  .q-header{background:#0A0808;padding:80px 60px 60px;border-bottom:1px solid var(--card-border);position:relative;}
+  .q-header::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+  .q-eyebrow{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;margin-bottom:28px;}
+  .q-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(60px,10vw,120px);letter-spacing:-1px;line-height:0.9;color:var(--off-white);margin-bottom:32px;}
+  .q-subtitle{font-size:15px;color:var(--muted);max-width:700px;line-height:1.7;border-left:3px solid var(--gold);padding-left:20px;}
+  .q-subtitle strong{color:var(--off-white);}
+  .q-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--card-border);margin-bottom:1px;}
+  .q-grid.cols-3{grid-template-columns:repeat(3,1fr);}
+  .q-item{background:var(--card-bg);padding:24px 28px;}
+  .q-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--crimson-mid);margin-bottom:10px;}
+  .q-label.gold{color:var(--gold);}
+  .q-value{font-size:14px;color:var(--off-white);line-height:1.6;}
+  .q-value.large{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;color:var(--off-white);line-height:1.1;}
+  .q-value a{color:var(--crimson-glow);text-decoration:none;font-size:12px;font-family:'Space Mono',monospace;}
+  .q-value .sub{font-size:12px;color:var(--muted);margin-top:4px;font-family:'Space Mono',monospace;}
+  .q-talking-point{background:var(--card-bg);border:1px solid var(--card-border);padding:20px 24px;margin-bottom:1px;display:flex;gap:20px;align-items:flex-start;}
+  .q-tp-num{font-family:'Bebas Neue',sans-serif;font-size:40px;color:var(--card-border);line-height:1;flex-shrink:0;width:40px;}
+  .q-tp-text{font-size:14px;color:var(--muted);line-height:1.7;}
+  .q-tp-text strong{color:var(--off-white);}
+  .q-social-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--card-border);}
+  .q-social-item{background:var(--card-bg);padding:20px 24px;}
+  .q-social-platform{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--off-white);margin-bottom:4px;}
+  .q-social-count{font-family:'Space Mono',monospace;font-size:11px;color:var(--crimson-glow);margin-bottom:8px;}
+  .q-social-link{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);word-break:break-all;}
+  .q-social-link a{color:var(--crimson-glow);text-decoration:none;}
+  .q-media-item{background:var(--card-bg);border:1px solid var(--card-border);padding:20px 24px;margin-bottom:1px;display:flex;gap:20px;align-items:flex-start;}
+  .q-media-num{font-family:'Bebas Neue',sans-serif;font-size:40px;color:var(--crimson-mid);line-height:1;flex-shrink:0;width:40px;}
+  .q-media-outlet{font-family:'DM Sans',sans-serif;font-weight:500;font-size:15px;color:var(--off-white);margin-bottom:4px;}
+  .q-media-reason{font-size:13px;color:var(--muted);line-height:1.6;}
+  .q-avail-strip{background:#100C0B;border-top:1px solid var(--gold);border-bottom:1px solid var(--card-border);padding:32px 60px;}
+  .q-avail-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--card-border);}
+  .q-avail-item{background:#100C0B;padding:20px 24px;}
+  .q-avail-item .day{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:var(--off-white);margin-bottom:4px;}
+  .q-avail-item .status{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;}
+  .q-avail-item.available .status{color:#4CAF50;}
+  .q-avail-item.busy .status{color:var(--crimson-glow);}
+  .q-avail-item.reserved .status{color:var(--gold);}
+  .q-avail-item .note{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.5;}
+  .q-interview-q{background:var(--card-bg);border-left:3px solid var(--gold);padding:20px 24px;margin-bottom:1px;}
+  .q-interview-q p{font-size:14px;color:var(--off-white);line-height:1.6;font-style:italic;}
+  .q-quirk-item{background:var(--card-bg);border:1px solid var(--card-border);padding:20px 24px;margin-bottom:1px;display:flex;gap:16px;align-items:flex-start;}
+  .q-quirk-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:8px;}
+  .q-quirk-text{font-size:14px;color:var(--muted);line-height:1.7;}
+  .q-quirk-text strong{color:var(--off-white);}
+  .q-existing-rel{background:var(--card-bg);border:1px solid var(--card-border);padding:16px 24px;margin-bottom:1px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;}
+  .q-rel-name{font-family:'DM Sans',sans-serif;font-weight:500;font-size:14px;color:var(--off-white);}
+  .q-rel-note{font-size:12px;color:var(--muted);flex:1;}
+  .q-rel-badge{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:3px 10px;border:1px solid #4CAF50;color:#4CAF50;flex-shrink:0;}
+  @media(max-width:768px){.tab-nav{padding:0 24px;overflow-x:auto;}.campaign-header{padding:40px 24px;}.container{padding:0 24px;}section{padding:60px 0;}.card-grid-2,.card-grid-3,.rw-tactics,.influencer-tier-row,.contact-grid,.assessment-grid,.billboard-market-grid,.q-grid,.q-grid.cols-3,.q-social-grid,.q-avail-grid{grid-template-columns:1fr;}.divider{margin:0 24px;}.assessment-strip,.billboard-section,.q-header,.q-avail-strip{padding:40px 24px;}.release-week,footer{padding:40px 24px;}}
+</style>
 </head>
-<body>placeholder</body>
+<body>
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('marketing',this)">Marketing Strategy</button>
+  <div class="tab-divider"></div>
+  <button class="tab-btn gold-tab" onclick="switchTab('questionnaire',this)">Author Questionnaire</button>
+</nav>
+
+<!-- TAB 1: MARKETING STRATEGY -->
+
+<div id="tab-marketing" class="tab-content active">
+<header class="campaign-header">
+  <div class="header-eyebrow">W Publishing / HarperCollins Christian &nbsp;&middot;&nbsp; Campaign Dossier &nbsp;&middot;&nbsp; October 2026</div>
+  <div class="header-title">CONTEND<span class="accent">.</span></div>
+  <div class="header-subtitle-row">
+    <div class="header-author"><strong>Philip Anthony Mitchell</strong>Author &nbsp;&middot;&nbsp; Senior Pastor, 2819 Church &nbsp;&middot;&nbsp; Atlanta</div>
+    <div class="header-badges"><span class="badge hot">5.2M+ Platform</span><span class="badge hot">ACCESS Dallas &mdash; 80K Projected</span><span class="badge gold-badge">Target: 20K&ndash;38K Week 1</span></div>
+  </div>
+</header>
+<div class="assessment-strip">
+  <div class="strip-label">// Marketing Assessment &mdash; Campaign Direction Review</div>
+  <div class="assessment-grid">
+    <div class="assessment-cell green"><div class="cell-label">&#10003; Strengths</div><p><strong>Platform timing is exceptional.</strong> An 80K-attended event landing on release week is not a marketing tactic &mdash; it&rsquo;s a distribution event. Contend Sunday (200+ churches) creates a synchronized, organic word-of-mouth engine that no budget can replicate.</p></div>
+    <div class="assessment-cell yellow"><div class="cell-label">&#9888; Gaps to Close</div><p><strong>Email is the single largest risk.</strong> Building 50K from zero by October is aggressive. Start pixel capture on the current site immediately. Platform is a megaphone; email is a conversion tool.</p></div>
+    <div class="assessment-cell green"><div class="cell-label">&#10003; Direction Verdict</div><p><strong>This is going in the right direction.</strong> The ACCESS Dallas anchor, Contend Sunday, multi-platform influencer activation, and tiered pre-order incentives are structurally sound. The missing piece isn&rsquo;t strategy &mdash; it&rsquo;s <em>speed</em>.</p></div>
+  </div>
+</div>
+<div class="divider"></div>
+<section><div class="container">
+  <div class="section-label">// 01 &mdash; Core Audience</div><div class="section-title">WHO THIS IS FOR</div>
+  <div class="card-grid-2">
+    <div><div class="card"><div class="card-label">Primary Reader</div><h3>The Frustrated Faithful</h3><p>A Christian between <strong>18 and 40</strong> who loves Jesus but is frustrated with the state of the modern church. Spiritually hungry. Drawn to authenticity over aesthetics.</p></div><div class="callout" style="margin-top:1px"><p>The 2819 Church congregation (<strong>6,000+ weekly</strong>) and Pastor Philip&rsquo;s social media audience (<strong>5.2M+</strong>) skew heavily toward this demographic &mdash; Black and multicultural audiences, urban professionals, and college students.</p></div></div>
+    <div style="display:flex;flex-direction:column;gap:1px"><div class="card"><div class="card-label">Secondary &mdash; Ministry</div><h3>Pastors &amp; Leaders</h3><p>Leaders looking for language and conviction to preach boldly. <strong>This tier drives bulk orders.</strong></p></div><div class="card"><div class="card-label">Secondary &mdash; Seekers</div><h3>Spiritually Curious Non-Believers</h3><p>Gen Z and Millennials open to encountering the real Jesus.</p></div><div class="card"><div class="card-label">Secondary &mdash; Family</div><h3>Praying Parents</h3><p>Parents praying for their children&rsquo;s faith. Gift purchasers and multipliers.</p></div></div>
+  </div>
+</div></section>
+<div class="divider"></div>
+<section><div class="container">
+  <div class="section-label">// 02 &mdash; Platform &amp; Reach</div><div class="section-title">5.2M+ FOLLOWERS</div>
+  <div class="card-grid-2" style="align-items:start">
+    <div class="card"><div class="card-label">Social Presence by Platform</div>
+      <div class="platform-row"><div class="platform-name">Instagram</div><div class="platform-bar-wrap"><div class="platform-bar-fill" style="width:100%"></div></div><div class="platform-count">1.8M</div></div>
+      <div class="platform-row"><div class="platform-name">YouTube (2819)</div><div class="platform-bar-wrap"><div class="platform-bar-fill" style="width:82%"></div></div><div class="platform-count">1.47M</div></div>
+      <div class="platform-row"><div class="platform-name">TikTok</div><div class="platform-bar-wrap"><div class="platform-bar-fill" style="width:72%"></div></div><div class="platform-count">1.3M</div></div>
+      <div class="platform-row"><div class="platform-name">Facebook</div><div class="platform-bar-wrap"><div class="platform-bar-fill gold" style="width:36%"></div></div><div class="platform-count">647K</div></div>
+      <div class="platform-row"><div class="platform-name">X / Twitter</div><div class="platform-bar-wrap"><div class="platform-bar-fill gold" style="width:2%"></div></div><div class="platform-count">28.9K</div></div>
+      <div class="platform-row"><div class="platform-name">Mailchimp</div><div class="platform-bar-wrap"><div class="platform-bar-fill gold" style="width:8%"></div></div><div class="platform-count">132K</div></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div class="card"><div class="card-label">Highest-Performing Content</div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px">
+          <div style="display:flex;gap:12px"><span style="font-family:'Space Mono',monospace;font-size:10px;color:var(--crimson-glow);flex-shrink:0">#1</span><div><div style="font-size:13px;font-weight:500;color:var(--off-white)">Sermon clips (60&ndash;90 sec)</div><div style="font-size:12px;color:var(--muted)">Reels, TikTok, Shorts &mdash; top performers across all platforms</div></div></div>
+          <div style="display:flex;gap:12px"><span style="font-family:'Space Mono',monospace;font-size:10px;color:var(--gold);flex-shrink:0">#2</span><div><div style="font-size:13px;font-weight:500;color:var(--off-white)">Prayer content</div><div style="font-size:12px;color:var(--muted)">Saves, shares, comments &mdash; highest emotional resonance</div></div></div>
+          <div style="display:flex;gap:12px"><span style="font-family:'Space Mono',monospace;font-size:10px;color:var(--gold);flex-shrink:0">#3</span><div><div style="font-size:13px;font-weight:500;color:var(--off-white)">Cultural commentary</div><div style="font-size:12px;color:var(--muted)">Biblical lens &mdash; drives new-audience discovery</div></div></div>
+          <div style="display:flex;gap:12px"><span style="font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);flex-shrink:0">#4</span><div><div style="font-size:13px;font-weight:500;color:var(--off-white)">Behind-the-scenes</div><div style="font-size:12px;color:var(--muted)">Study sessions, pre-service prep</div></div></div>
+        </div>
+      </div>
+      <div class="callout gold-callout"><p>Beginning <strong>April 2026</strong>, the content team produces <strong>3&ndash;4 short-form pieces per week + 1 long-form YouTube</strong> &mdash; six-month narrative to release week.</p></div>
+    </div>
+  </div>
+</div></section>
+<div class="divider"></div>
+<section><div class="container">
+  <div class="section-label">// 03 &mdash; Email Infrastructure</div><div class="section-title">BUILDING FROM ZERO</div>
+  <div class="card-grid-3">
+    <div class="card"><div class="stat-number">0</div><div class="stat-unit">Current Subscribers</div><p style="margin-top:16px;font-size:13px">Personal brand list begins from scratch in April 2026. The campaign&rsquo;s most critical infrastructure build.</p></div>
+    <div class="card"><div class="stat-number">50K</div><div class="stat-unit">Target by October 2026</div><p style="margin-top:16px;font-size:13px">Lead magnet, paid ads, text-to-subscribe at services, YouTube CTAs, and podcast cross-promotion.</p></div>
+    <div class="card"><div class="stat-number">80K</div><div class="stat-unit">ACCESS Dallas Pipeline</div><p style="margin-top:16px;font-size:13px"><strong style="color:var(--off-white)">The unlock.</strong> ACCESS Dallas registrants are a pre-qualified, high-intent email acquisition with Contend CTAs embedded throughout.</p></div>
+  </div>
+</div></section>
+<div class="divider"></div>
+<section><div class="container">
+  <div class="section-label">// 04 &mdash; Pre-Order Incentive Structure</div><div class="section-title">THREE TIERS. ONE BOOK.</div>
+  <div class="tier-stack">
+    <div class="tier"><div class="tier-num">01</div><div class="tier-content"><div class="tier-copies">1 copy pre-order</div><div class="tier-title">The Contend Sessions</div><div class="tier-desc">Immediate access to <strong>3&ndash;5 exclusive short films</strong> &mdash; Pastor Philip going deeper on the book&rsquo;s themes. Not available anywhere else.</div></div></div>
+    <div class="tier featured"><div class="tier-num">02</div><div class="tier-content"><div class="tier-copies">3 copies pre-ordered</div><div class="tier-title">Everything in Tier 1 + Small Group Guide</div><div class="tier-desc">A private digital small group guide. <strong>Designed to lead a 4-week study with friends.</strong> One pre-order becomes a group experience.</div></div></div>
+    <div class="tier"><div class="tier-num">03</div><div class="tier-content"><div class="tier-copies">10+ copies pre-ordered</div><div class="tier-title">Everything Above + Virtual Q&amp;A with Pastor Philip</div><div class="tier-desc">Virtual Q&amp;A &mdash; <strong>limited to first 500 qualifiers</strong>. The church leader tier for pastors placing bulk orders.</div></div></div>
+  </div>
+  <div class="callout gold-callout" style="margin-top:20px"><p><strong>Additional bonus content:</strong> Exclusive chapter or prologue &middot; Behind-the-scenes video diary &middot; Digital prayer guide companion.</p></div>
+</div></section>
+<div class="divider"></div>
+<section><div class="container">
+  <div class="section-label">// 05 &mdash; Influencer Activation</div><div class="section-title">200&ndash;300 VOICES. ONE WEEK.</div>
+  <p style="font-size:15px;color:var(--muted);max-width:680px;line-height:1.7">Full list delivered by <strong style="color:var(--off-white)">June 1, 2026</strong>. Every influencer receives an ARC with a <strong style="color:var(--off-white)">handwritten personal note from Pastor Philip</strong>. Modeled on the FrontGate Media approach used for Sarah Jakes Roberts&rsquo; <em>Woman Evolve</em> (#1 ECPA).</p>
+  <div class="influencer-tier-row">
+    <div class="inf-cell macro"><div class="tier-badge">Macro</div><div class="range">500K+</div><div class="inf-purpose">Awareness play. TBN talent network, Street Preachers collaborators, major Christian podcast hosts.</div></div>
+    <div class="inf-cell mid"><div class="tier-badge">Mid-Tier</div><div class="range">50&ndash;500K</div><div class="inf-purpose">Credibility play. Christian lifestyle bloggers, worship leaders, faith-content YouTubers.</div></div>
+    <div class="inf-cell micro"><div class="tier-badge">Micro</div><div class="range">10&ndash;50K</div><div class="inf-purpose">Conversion play. BookTok/BookStagram creators, Christian book reviewers, local church influencers.</div></div>
+  </div>
+  <div class="callout" style="margin-top:20px"><p><strong>Podcast tour:</strong> The Breakfast Club, Earn Your Leisure, Joe Rogan. Christian &mdash; The Bible Recap, Unashamed. <strong>The secular bookings are not crossover attempts &mdash; they are ambushes.</strong></p></div>
+</div></section>
+<div class="divider"></div>
+<div class="billboard-section"><div style="position:relative;z-index:1">
+  <div class="section-label" style="color:var(--gold)">// 06 &mdash; Billboard Campaign &mdash; One Week Prior to Release</div>
+  <div class="section-title">THE STREET SPEAKS FIRST.</div>
+  <p style="font-size:15px;color:var(--muted);max-width:720px;line-height:1.7;position:relative;z-index:1">Digital and social create noise. <strong style="color:var(--off-white)">A billboard creates a landmark.</strong> Six major markets go physical the week before release.</p>
+  <div style="max-width:900px;margin:40px auto 8px;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--card-border)">
+    <div style="background:#100C0B;padding:20px 24px"><div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;margin-bottom:12px">// Cover Identity &mdash; Apply to All Campaign Materials</div><div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center"><div style="width:36px;height:36px;background:#B8872E;border-radius:2px"></div><div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--off-white)">Gold<br><span style="color:var(--muted)">#B8872E</span></div><div style="width:36px;height:36px;background:#F7F4EF;border:1px solid #D4B896;border-radius:2px"></div><div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--off-white)">Off-White<br><span style="color:var(--muted)">#F7F4EF</span></div><div style="width:36px;height:36px;background:#0A0A0A;border-radius:2px"></div><div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--off-white)">Shadow Black<br><span style="color:var(--muted)">#0A0A0A</span></div></div></div>
+    <div style="background:#100C0B;padding:20px 24px"><div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;margin-bottom:12px">// Creative Direction &mdash; Primary Billboard</div><p style="font-size:12px;color:var(--muted);line-height:1.6">The book cover is the campaign anchor. <strong style="color:var(--off-white)">Gold on white, black as shadow.</strong> No color that isn&rsquo;t on the cover lives on the billboard. One word. Maximum size. The rest is silence.</p></div>
+  </div>
+  <div class="billboard-mockup"><div class="billboard-word">CONTEND.</div><div class="billboard-byline">Philip Anthony Mitchell</div><div class="billboard-release">Available October 2026 &nbsp;&middot;&nbsp; contendthebook.com</div></div>
+  <div class="billboard-legs"><div class="billboard-leg"></div><div class="billboard-leg"></div></div>
+  <div style="max-width:900px;margin:12px auto 0;text-align:center"><span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase">Concept: Stark black field. Single word. Maximum legibility at 65 mph.</span></div>
+  <div class="billboard-market-grid">
+    <div class="billboard-market"><div class="market-city primary">Dallas, TX</div><div class="market-detail">ACCESS Dallas host city<br>DOOH near Kay Bailey Hutchison Convention Center<br>Church corridor placements</div><div class="market-type primary-tag">Primary Market</div></div>
+    <div class="billboard-market"><div class="market-city">Atlanta, GA</div><div class="market-detail">Home church market<br>I-285 corridor, Greenbriar, SWATS<br>Near Morehouse, Spelman, Clark Atlanta</div><div class="market-type">Home Market</div></div>
+    <div class="billboard-market"><div class="market-city">Houston, TX</div><div class="market-detail">Strong Black church concentration<br>Highway 288 / Third Ward / Midtown</div><div class="market-type">Secondary Market</div></div>
+    <div class="billboard-market"><div class="market-city">Chicago, IL</div><div class="market-detail">South Side corridor<br>Transit shelter ads at L stops</div><div class="market-type">Secondary Market</div></div>
+    <div class="billboard-market"><div class="market-city">New York, NY</div><div class="market-detail">Digital OOH Times Square / Midtown<br>A/C/E line stations, Harlem corridors</div><div class="market-type">Secondary Market</div></div>
+    <div class="billboard-market"><div class="market-city">Los Angeles, CA</div><div class="market-detail">Crenshaw / Inglewood / Compton<br>Near Azusa Pacific, Biola University</div><div class="market-type">Secondary Market</div></div>
+  </div>
+  <div class="billboard-budget-row">
+    <div class="budget-item"><div class="b-label">Window</div><div class="b-value">7 Days</div></div>
+    <div class="budget-item"><div class="b-label">Markets</div><div class="b-value">6</div></div>
+    <div class="budget-item"><div class="b-label">Format</div><div class="b-value accent">14&times;48 + DOOH</div></div>
+    <div class="budget-item"><div class="b-label">Est. Budget</div><div class="b-value accent">$25&ndash;40K</div></div>
+    <div class="budget-item"><div class="b-label">Timing</div><div class="b-value">Oct 19&ndash;25</div></div>
+  </div>
+  <div class="callout gold-callout" style="max-width:900px;margin:24px auto 0"><p><strong>Measurement:</strong> QR codes on DOOH route to pre-order page. Promo code BILLBOARD tracks conversion. <strong>The physical and digital campaigns are one system, not two.</strong></p></div>
+</div></div>
+<section><div class="container">
+  <div class="section-label">// 07 &mdash; Campaign Timeline</div><div class="section-title">THE RUNWAY</div>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-dot active"></div><div class="tl-date">April 2026 &mdash; 6 Months Out</div><div class="tl-title">Content Engine Launches + Digital Infrastructure Begins</div><div class="tl-body"><strong>3&ndash;4 short-form pieces/week + 1 long-form YouTube</strong>. Facebook pixel placed on current site. Email list build starts.</div><div class="tl-tags"><span class="tl-tag red-tag">Critical Path</span><span class="tl-tag">Content</span><span class="tl-tag">Email</span></div></div>
+    <div class="tl-item"><div class="tl-dot active"></div><div class="tl-date">May 2026 &mdash; 5 Months Out</div><div class="tl-title">W Delivers Marketing Plan &middot; New Website Launches</div><div class="tl-body">Publisher marketing plan finalized. <strong>philipanthonymitchell.com</strong> targets May 31 launch. ARC quantity confirmed (300+).</div><div class="tl-tags"><span class="tl-tag">Website</span><span class="tl-tag">Pixel</span><span class="tl-tag">ARCs</span></div></div>
+    <div class="tl-item"><div class="tl-dot active"></div><div class="tl-date">June 2026 &mdash; 4 Months Out</div><div class="tl-title">Influencer List Delivered &middot; Book Landing Page Live</div><div class="tl-body"><strong>200&ndash;300 name influencer list</strong> delivered to W by June 1. Long-lead PR interviews scheduled.</div><div class="tl-tags"><span class="tl-tag">Influencer</span><span class="tl-tag">PR</span><span class="tl-tag">Landing Page</span></div></div>
+    <div class="tl-item"><div class="tl-dot active"></div><div class="tl-date">July 2026 &mdash; 3 Months Out</div><div class="tl-title">Book Announcement + Pre-Order Opens</div><div class="tl-body"><strong>Cinematic announcement film</strong> drops early July. Pre-order tiers go live across all 5.2M+ followers.</div><div class="tl-tags"><span class="tl-tag red-tag">Announcement Day</span><span class="tl-tag">Pre-Order</span></div></div>
+    <div class="tl-item"><div class="tl-dot active"></div><div class="tl-date">September 2026 &mdash; 1 Month Out</div><div class="tl-title">Short-Lead PR &middot; Paid Media Launches &middot; Podcast Tour</div><div class="tl-body">Author-side paid media: <strong>$75K&ndash;$150K</strong>. Podcast tour begins. PAM shifts to weekly calls.</div><div class="tl-tags"><span class="tl-tag red-tag">Paid Media</span><span class="tl-tag">Podcast Tour</span><span class="tl-tag">PR</span></div></div>
+    <div class="tl-item"><div class="tl-dot billboard-dot"></div><div class="tl-date gold-date">October 19&ndash;25, 2026 &mdash; 7 Days Prior</div><div class="tl-title">OOH Campaign Launches Across 6 Markets</div><div class="tl-body">14&times;48 boards and DOOH live in <strong>Dallas, Atlanta, Houston, Chicago, New York, Los Angeles</strong>.</div><div class="tl-tags"><span class="tl-tag gold-tag">Billboard</span><span class="tl-tag gold-tag">$25&ndash;40K</span><span class="tl-tag gold-tag">6 Markets</span></div></div>
+    <div class="tl-item"><div class="tl-dot active"></div><div class="tl-date">Week of Release &mdash; Late October 2026</div><div class="tl-title">ACCESS Dallas + Contend Sunday + Full Activation</div><div class="tl-body"><strong>80K projected at ACCESS Dallas</strong>. Contend Sunday across <strong>200+ partner churches</strong>. Full email list. Staggered influencer wave.</div><div class="tl-tags"><span class="tl-tag red-tag">Release Week</span><span class="tl-tag">ACCESS Dallas</span><span class="tl-tag">Contend Sunday</span></div></div>
+  </div>
+</div></section>
+<div class="release-week">
+  <div class="rw-label">// Week 1 Target</div>
+  <h2>FIRST WEEK. ALL CHANNELS. ONE NUMBER.</h2>
+  <div class="rw-target"><div class="target-num">38K</div><div class="target-detail"><strong>20,000&ndash;38,000 copies</strong>Week 1 &mdash; ACCESS Dallas, Contend Sunday (200+ churches), Amazon, B&amp;N, BAM, ChristianBook.com</div></div>
+  <div class="rw-tactics" style="margin-top:40px">
+    <div class="rw-tactic"><div class="tactic-name">ACCESS Dallas On-Site</div><div class="tactic-desc">80K projected attendees &middot; Local bookstore partners &middot; QR-code purchase stations</div></div>
+    <div class="rw-tactic"><div class="tactic-name">Contend Sunday</div><div class="tactic-desc">200+ churches coordinated simultaneous purchase push &middot; Bulk order pipeline</div></div>
+    <div class="rw-tactic"><div class="tactic-name">Influencer Wave</div><div class="tactic-desc">Staggered macro + mid + micro activation Tuesday&ndash;Thursday</div></div>
+    <div class="rw-tactic"><div class="tactic-name">Documentary Potential</div><div class="tactic-desc">&ldquo;Contend: The Film&rdquo; &mdash; potential premiere at ACCESS Dallas</div></div>
+  </div>
+</div>
+<section><div class="container">
+  <div class="section-label">// 08 &mdash; Digital &amp; Retargeting Infrastructure</div><div class="section-title">PIXEL. TRACK. CONVERT.</div>
+  <div class="card-grid-2">
+    <div class="card"><div class="card-label">Current State</div><h3>Site Redesign Underway</h3><p>philipanthonymitchell.com targets <strong>May 31, 2026</strong> with GA4, Facebook pixel, and email capture from day one. <strong>Action item: install Facebook pixel on current site immediately.</strong></p></div>
+    <div class="card"><div class="card-label">Tracking Stack (at Launch)</div><h3>Full Pixel Suite</h3><p>Google Analytics 4 &middot; <strong>Facebook pixel (publisher-coordinated)</strong> &middot; TikTok pixel &middot; Google Ads. All pixels Day 1. Audience skews 18&ndash;40, urban, mobile-first.</p></div>
+  </div>
+</div></section>
+<div class="divider"></div>
+<section><div class="container">
+  <div class="section-label">// 09 &mdash; Author Team Contacts</div><div class="section-title">WHO YOU CALL</div>
+  <div class="contact-grid">
+    <div class="contact-cell"><div class="c-role">Primary Contact &mdash; Decision Maker</div><div class="c-name">Lonnell Williams</div><div class="c-email">lonnell@2819church.org</div><div class="c-note">XP (Executive Pastor), 2819 Church. <strong style="color:var(--off-white)">Primary point of contact for all marketing plan presentations and weekly status calls.</strong></div></div>
+    <div class="contact-cell"><div class="c-role">Author</div><div class="c-name">Philip Anthony Mitchell</div><div class="c-email">Available via Lonnell Williams</div><div class="c-note">Available for key milestone presentations. <strong style="color:var(--off-white)">Shifts to weekly calls beginning September 2026 through launch.</strong></div></div>
+    <div class="contact-cell"><div class="c-role">Director of Pastoral Relations</div><div class="c-name">Jatona King</div><div class="c-email">jatona@2819church.org</div><div class="c-note">Key liaison for <strong style="color:var(--off-white)">Contend Sunday</strong> partner church activation and ministry leader outreach across the 200+ church network.</div></div>
+  </div>
+</div></section>
+<footer><div class="footer-brand">CONTEND</div><div class="footer-meta">W Publishing / HarperCollins Christian<br>Campaign Dossier &mdash; 2819 Church Author Team<br>Confidential &middot; Not for distribution</div></footer>
+</div>
+
+<!-- TAB 2: AUTHOR QUESTIONNAIRE -->
+
+<div id="tab-questionnaire" class="tab-content">
+
+<div class="divider"></div>
+<section><div class="container">
+  <div class="section-label">// 01 &mdash; Author Information</div><div class="section-title">THE AUTHOR</div>
+  <div class="q-grid">
+    <div class="q-item"><div class="q-label">Author&rsquo;s Name (as it appears in all materials)</div><div class="q-value large">Philip Anthony Mitchell</div></div>
+    <div class="q-item"><div class="q-label">How to Address in Media</div><div class="q-value large">PAM</div><div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);margin-top:8px">Or: Pastor Philip Anthony Mitchell (formal/print contexts)</div></div>
+    <div class="q-item"><div class="q-label">Closest Large City</div><div class="q-value">Atlanta, Georgia</div></div>
+    <div class="q-item"><div class="q-label">Time Zone</div><div class="q-value">Eastern (ET)</div></div>
+    <div class="q-item"><div class="q-label">Phone (Land Line / Media Interviews)</div><div class="q-value">[To be provided by author&rsquo;s team]</div></div>
+    <div class="q-item"><div class="q-label">Mobile Phone</div><div class="q-value">[To be provided by author&rsquo;s team]</div></div>
+    <div class="q-item"><div class="q-label">Virtual Interview Platform</div><div class="q-value">Zoom or Google Meet preferred &mdash; N/A for Skype</div></div>
+    <div class="q-item"><div class="q-label">Mailing Address</div><div class="q-value">175 Country Club Drive, Suite 400 A-B<br>Stockbridge, GA 30281</div></div>
+  </div>
+  <div class="q-grid" style="margin-top:1px">
+    <div class="q-item"><div class="q-label">Website(s)</div><div class="q-value"><a href="https://www.philipanthonymitchell.com" target="_blank">philipanthonymitchell.com</a><div class="sub">Redesigned site launching May 2026 with book landing page and press kit.</div><a href="https://2819church.org" target="_blank" style="display:block;margin-top:8px">2819church.org</a></div></div>
+    <div class="q-item"><div class="q-label">Email</div><div class="q-value">jatona@2819church.org &nbsp;&middot;&nbsp; lonnell@2819church.org</div></div>
+  </div>
+</div></section>
+<div class="divider"></div>
+<section><div class="container">
+  <div class="section-label">// 02 &mdash; Social Media Platforms</div><div class="section-title">5.2M+ TOTAL REACH</div>
+  <div class="q-social-grid">
+    <div class="q-social-item"><div class="q-social-platform">Instagram</div><div class="q-social-count">~1.8M followers</div><div class="q-social-link"><a href="https://www.instagram.com/philipamitchell/" target="_blank">instagram.com/philipamitchell</a></div></div>
+    <div class="q-social-item"><div class="q-social-platform">YouTube</div><div class="q-social-count">1.48M+ subscribers</div><div class="q-social-link"><a href="https://www.youtube.com/user/victorychurchatl" target="_blank">youtube.com/user/victorychurchatl</a></div></div>
+    <div class="q-social-item"><div class="q-social-platform">TikTok</div><div class="q-social-count">1.3M followers</div><div class="q-social-link"><a href="https://www.tiktok.com/@philipanthonymitchell" target="_blank">tiktok.com/@philipanthonymitchell</a></div></div>
+    <div class="q-social-item"><div class="q-social-platform">Facebook</div><div class="q-social-count">647K followers</div><div class="q-social-link"><a href="https://www.facebook.com/philipanthonymitchell" target="_blank">facebook.com/philipanthonymitchell</a></div></div>
+    <div class="q-social-item"><div class="q-social-platform">X / Twitter</div><div class="q-social-count">28.9K followers</div><div class="q-social-link"><a href="https://x.com/PhilipAMitchell" target="_blank">x.com/PhilipAMitchell</a></div></div>
+    <div class="q-social-item" style="background:#100C0B;border:1px solid var(--gold)"><div class="q-social-platform" style="color:var(--gold)">Total Reach</div><div class="q-social-count" style="color:var(--gold-light)">5.2M+ across platforms</div><div class="q-social-link" style="color:var(--muted)">Mailchimp: 132K subscribers</div></div>
+  </div>
+</div></section>
+<div class="divider"></div>
+<section><div class="container">
+  <div class="section-label">// 03 &mdash; Scheduling &amp; Availability</div><div class="section-title">WHEN TO REACH US</div>
+  <div class="callout gold-callout"><p><strong>Best method:</strong> All media inquiries and interview scheduling routed through <strong>Lonnell Williams</strong> (lonnell@2819church.org) and <strong>Jatona King</strong> (jatona@2819church.org). Email preferred. Jatona manages Pastor Philip&rsquo;s calendar and approves all media requests.</p></div>
+</div></section>
+<div class="q-avail-strip">
+  <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.25em;color:var(--gold);text-transform:uppercase;margin-bottom:20px">// Weekly Availability Overview</div>
+  <div class="q-avail-grid">
+    <div class="q-avail-item available"><div class="day">Mon &amp; Tue</div><div class="status">&#10003; Available</div><div class="note">10:00 AM &ndash; 4:00 PM ET. Best days for interviews and calls.</div></div>
+    <div class="q-avail-item busy"><div class="day">Wed &ndash; Fri</div><div class="status">&#9888; Limited</div><div class="note">Sermon preparation. Strongly prefer to avoid scheduling interviews.</div></div>
+    <div class="q-avail-item reserved"><div class="day">Saturday</div><div class="status">&#9675; Case by Case</div><div class="note">Available for select strategic opportunities with advance notice.</div></div>
+    <div class="q-avail-item busy"><div class="day">Sunday</div><div class="status">&#10007; Unavailable</div><div class="note">Preaching at 2819 Church, multiple services, 6,000+ weekly attendance.</div></div>
+  </div>
+</div>
+<section><div class="container">
+  <div class="section-label" style="margin-top:0">Key Blackout Periods</div>
+  <div class="q-grid" style="margin-top:16px">
+    <div class="q-item"><div class="q-label gold">September &ndash; October 2026</div><div class="q-value">Street Preachers Tour (traveling). Remote/phone interviews available; in-person availability varies by city.</div></div>
+    <div class="q-item"><div class="q-label gold">Late October 2026 &mdash; Release Week</div><div class="q-value">ACCESS Dallas event week (80,000+ projected). Dallas-market press available. Major market travel should be bundled before or after ACCESS. <strong>Full court press of interviews, podcasts, and promotion takes priority this week.</strong></div></div>
+  </div>
+  <div class="callout" style="margin-top:20px"><p><strong>Press travel:</strong> Pastor Philip is available to hold release week for press. Recommend bundling major market press into 1&ndash;2 strategic travel days before or after ACCESS Dallas.</p></div>
+</div></section>
+<div class="divider"></div>
+<section><div class="container">
+  <div class="section-label">// 04 &mdash; Five Key Messages</div><div class="section-title">WHAT READERS TAKE AWAY</div>
+  <div class="q-talking-point"><div class="q-tp-num">01</div><div class="q-tp-text"><strong>This generation must contend for the faith</strong> &mdash; not fight culture wars, but hold fast to the truth of Scripture without apology. From Jude 1:3: &ldquo;earnestly contend for the faith which was once delivered unto the saints.&rdquo;</div></div>
+  <div class="q-talking-point"><div class="q-tp-num">02</div><div class="q-tp-text"><strong>Authenticity is not the enemy of truth.</strong> The world doesn&rsquo;t need a softer gospel; it needs a clearer one. The explosive growth of 2819 Church (200 to 6,000+ in three years) proves people are hungry for unapologetic biblical preaching.</div></div>
+  <div class="q-talking-point"><div class="q-tp-num">03</div><div class="q-tp-text"><strong>The American church is in crisis</strong> &mdash; not because the culture is hostile, but because the church has compromised. Contend calls believers back to reverence, holiness, and an uncompromising relationship with God.</div></div>
+  <div class="q-talking-point"><div class="q-tp-num">04</div><div class="q-tp-text"><strong>Conviction is not arrogance.</strong> Speaking truth with boldness is an act of love, not judgment. Pastor Philip&rsquo;s journey from Queens, NY to leading a movement in Atlanta demonstrates what happens when one life is fully surrendered to God&rsquo;s calling.</div></div>
+  <div class="q-talking-point"><div class="q-tp-num">05</div><div class="q-tp-text"><strong>There is a generation rising that is gravitating toward authenticity and truth.</strong> They are not looking for a watered-down faith. They are ready to contend.</div></div>
+</div></section>
+<div class="divider"></div>
+<section><div class="container">
+  <div class="section-label">// 05 &mdash; Preferred Interview Questions</div><div class="section-title">IF WE COULD CHOOSE.</div>
+  <div class="q-interview-q"><p>&ldquo;Why did you name the book <em>Contend</em>, and what does that word mean to you personally?&rdquo;</p></div>
+  <div class="q-interview-q"><p>&ldquo;You went from 200 people to 6,000 weekly in three years &mdash; and you say it happened when you stopped trying to grow. What do you mean by that?&rdquo;</p></div>
+  <div class="q-interview-q"><p>&ldquo;<em>Fortune</em> magazine called you a pastor who fills arenas by &lsquo;not sugarcoating the Bible.&rsquo; Why do you think that approach is resonating, especially with young people?&rdquo;</p></div>
+  <div class="q-interview-q"><p>&ldquo;What happened in Israel in December 2018 that changed the trajectory of your life and ministry?&rdquo;</p></div>
+  <div class="q-interview-q"><p>&ldquo;ACCESS drew 40,000 to State Farm Arena and now you&rsquo;re expecting 80,000 in Dallas. What is driving this hunger for prayer?&rdquo;</p></div>
+  <div class="q-interview-q"><p>&ldquo;You&rsquo;ve said the American church has too much preaching about love and not enough about judgment. What do you mean by that?&rdquo;</p></div>
+</div></section>
+<div class="divider"></div>
+<section><div class="container">
+  <div class="section-label">// 06 &mdash; Cultural Themes &amp; Current Events</div><div class="section-title">THE CONVERSATION THIS BOOK IS IN.</div>
+  <div class="q-grid cols-3">
+    <div class="q-item"><div class="q-label gold">Faith Resurgence</div><div class="q-value">The return of Gen Z and Millennials to faith &mdash; 2819&rsquo;s growth confirms a counter-trend to secularization narratives.</div></div>
+    <div class="q-item"><div class="q-label gold">Crisis of Authenticity</div><div class="q-value">In an era of performative everything, Contend argues for genuine conviction over optics.</div></div>
+    <div class="q-item"><div class="q-label gold">Church in a Divided Society</div><div class="q-value">Not as a political actor, but as a prophetic voice calling people to repentance &mdash; transcends political lines.</div></div>
+    <div class="q-item"><div class="q-label gold">Mental Health &amp; Identity</div><div class="q-value">A Scripture-rooted framework for a generation searching for meaning, purpose, and identity.</div></div>
+    <div class="q-item"><div class="q-label gold">Global Prayer Movement</div><div class="q-value">ACCESS events, the Asbury revival, and similar movements signal something stirring across the global church.</div></div>
+    <div class="q-item"><div class="q-label gold">Open Topics</div><div class="q-value">Faith, culture, church growth, leadership, fatherhood, race, and the role of the church in modern society.</div></div>
+  </div>
+</div></section>
+<div class="divider"></div>
+<section><div class="container">
+  <div class="section-label">// 07 &mdash; Top 5 Target Media Outlets</div><div class="section-title">WHERE WE WANT TO BE.</div>
+  <div class="q-media-item"><div class="q-media-num">01</div><div><div class="q-media-outlet">Good Morning America (ABC)</div><div class="q-media-reason">Largest morning show audience. People lining up at 5:30 AM for church is a compelling visual feature.</div></div></div>
+  <div class="q-media-item"><div class="q-media-num">02</div><div><div class="q-media-outlet">The Breakfast Club (iHeartRadio / YouTube)</div><div class="q-media-reason">Massive reach with the exact demographic driving 2819&rsquo;s growth. Pastor Philip&rsquo;s directness and Queens roots make him a natural fit.</div></div></div>
+  <div class="q-media-item"><div class="q-media-num">03</div><div><div class="q-media-outlet">NPR (Fresh Air or Morning Edition)</div><div class="q-media-reason">Intellectual credibility for the apologetics angle. &ldquo;Why are young people returning to faith?&rdquo; is an NPR story.</div></div></div>
+  <div class="q-media-item"><div class="q-media-num">04</div><div><div class="q-media-outlet">CNN or Fox News (Feature / Interview Segment)</div><div class="q-media-reason">The faith movement transcends political lines. The <em>Fortune</em> feature provides credibility for mainstream news coverage.</div></div></div>
+  <div class="q-media-item"><div class="q-media-num">05</div><div><div class="q-media-outlet">The Joe Rogan Experience or similar long-form podcast</div><div class="q-media-reason">Pastor Philip&rsquo;s unfiltered, conviction-driven style is built for long-form. Significant audience overlap with spiritually curious but unchurched listeners.</div></div></div>
+  <div class="callout" style="margin-top:20px"><p><strong>No outlets are off-limits.</strong> Pastor Philip is equally comfortable in Christian media and secular/mainstream environments.</p></div>
+</div></section>
+<div class="divider"></div>
+<section><div class="container">
+  <div class="section-label">// 08 &mdash; Existing Media Relationships</div><div class="section-title">WARM CONTACTS.</div>
+  <div class="q-existing-rel"><div class="q-rel-name">TBN (Trinity Broadcasting Network)</div><div class="q-rel-note">Featured personality. Strong existing relationship. Ready to activate.</div><div class="q-rel-badge">&#10003; Priority</div></div>
+  <div class="q-existing-rel"><div class="q-rel-name">Fortune Magazine</div><div class="q-rel-note">December 2025 feature article. Reporter may be interested in a follow-up around the book release.</div><div class="q-rel-badge">&#10003; Priority</div></div>
+  <div class="q-existing-rel"><div class="q-rel-name">CBN News</div><div class="q-rel-note">Has covered 2819 Church and the London revival events favorably.</div><div class="q-rel-badge">&#10003; Warm</div></div>
+  <div class="q-existing-rel"><div class="q-rel-name">WABE (Atlanta NPR Affiliate)</div><div class="q-rel-note">Covered the church growth story previously.</div><div class="q-rel-badge">&#10003; Warm</div></div>
+  <div class="q-existing-rel"><div class="q-rel-name">AFRO American Newspapers</div><div class="q-rel-note">Covered the young adult faith movement.</div><div class="q-rel-badge">&#10003; Warm</div></div>
+  <div class="q-existing-rel"><div class="q-rel-name">Faithfully Magazine</div><div class="q-rel-note">Covered the 2819 growth story.</div><div class="q-rel-badge">&#10003; Warm</div></div>
+  <div class="q-existing-rel"><div class="q-rel-name">Premier Christianity (UK)</div><div class="q-rel-note">Published an in-depth interview. International reach.</div><div class="q-rel-badge">&#10003; Warm</div></div>
+  <div class="callout" style="margin-top:20px"><p><strong>No negative media relationships to flag.</strong> No outlets are off-limits for outreach.</p></div>
+</div></section>
+<div class="divider"></div>
+<section><div class="container">
+  <div class="section-label">// 09 &mdash; Author-Side Marketing Efforts</div><div class="section-title">WHAT WE&rsquo;RE ALREADY BUILDING.</div>
+  <div class="q-grid cols-3">
+    <div class="q-item"><div class="q-label gold">Content Campaign</div><div class="q-value">Personal videographer begins April 1, 2026. Serialized content across Instagram, TikTok, YouTube, and Facebook. Planned documentary (&ldquo;Contend: The Film&rdquo;) premiering at ACCESS Dallas.</div></div>
+    <div class="q-item"><div class="q-label gold">Website Redesign</div><div class="q-value">New philipanthonymitchell.com launching May 2026 with dedicated book landing page, email capture, and press kit.</div></div>
+    <div class="q-item"><div class="q-label gold">Email List Build</div><div class="q-value">Launching April 2026 with lead magnet and paid + organic subscriber acquisition. Target: 50,000 subscribers by October.</div></div>
+    <div class="q-item"><div class="q-label gold">Street Preachers Tour</div><div class="q-value">September&ndash;October 2026. Multi-city tour with on-site book sales through local bookstore partnerships.</div></div>
+    <div class="q-item"><div class="q-label gold">ACCESS Dallas</div><div class="q-value">Late October 2026 &mdash; same week as release. Projected 80,000 attendees. Books sold on-site through multiple retail partners.</div></div>
+    <div class="q-item"><div class="q-label gold">Contend Sunday</div><div class="q-value">200+ partner churches simultaneously preach from Contend&rsquo;s themes the Sunday after release, with books available through local bookstore partnerships.</div></div>
+    <div class="q-item"><div class="q-label gold">Influencer Activation</div><div class="q-value">200&ndash;300 ARC copies to Christian social media influencers with personal handwritten notes from Pastor Philip.</div></div>
+    <div class="q-item"><div class="q-label gold">Paid Media</div><div class="q-value">$75K&ndash;$150K launching September 2026. Facebook/Instagram retargeting, YouTube pre-roll, Amazon advertising, and Christian radio.</div></div>
+    <div class="q-item"><div class="q-label gold">Original Content</div><div class="q-value">Open to op-eds and articles for media partners. Lead time: 2&ndash;3 weeks long-form, 1 week for Q&amp;A formats. All content reviewed by Lonnell Williams before submission.</div></div>
+  </div>
+</div></section>
+<div class="divider"></div>
+<section><div class="container">
+  <div class="section-label">// 10 &mdash; The Person Behind the Pulpit</div><div class="section-title">WHO HE IS.</div>
+  <div class="q-quirk-item"><div class="q-quirk-dot"></div><div class="q-quirk-text"><strong>Born and raised in Queens, New York</strong> &mdash; brings East Coast directness and energy uncommon in the Southern church context.</div></div>
+  <div class="q-quirk-item"><div class="q-quirk-dot"></div><div class="q-quirk-text"><strong>Married to his wife Lena since August 7, 2004</strong> &mdash; 21 years of marriage. They have four children: two sons and two daughters.</div></div>
+  <div class="q-quirk-item"><div class="q-quirk-dot"></div><div class="q-quirk-text"><strong>Honors graduate of North Carolina Central University</strong> (an HBCU) and holds a degree in Pastoral and Church Leadership from Valor Christian College.</div></div>
+  <div class="q-quirk-item"><div class="q-quirk-dot"></div><div class="q-quirk-text"><strong>The name &ldquo;2819&rdquo; comes from Matthew 28:19.</strong> The church started in January 2023 with just 183 believers.</div></div>
+  <div class="q-quirk-item"><div class="q-quirk-dot"></div><div class="q-quirk-text"><strong>People regularly line up as early as 5:30 AM</strong> for Sunday services at 2819 Church.</div></div>
+  <div class="q-quirk-item"><div class="q-quirk-dot"></div><div class="q-quirk-text"><strong>Featured on TBN</strong> (Trinity Broadcasting Network) as a regular voice.</div></div>
+  <div class="q-quirk-item"><div class="q-quirk-dot"></div><div class="q-quirk-text"><strong>The Street Preachers Tour</strong> takes the gospel to public spaces and unconventional venues across America.</div></div>
+  <div class="q-quirk-item"><div class="q-quirk-dot"></div><div class="q-quirk-text"><strong>Personal motto: &ldquo;Until All Have Heard.&rdquo;</strong></div></div>
+  <div class="callout gold-callout" style="margin-top:20px"><p><strong>Privacy note:</strong> Pastor Philip&rsquo;s children&rsquo;s names and identities are private. General family references (married, four children) are fine. Church financial details are not for public discussion. All other topics are open.</p></div>
+</div></section>
+<footer><div class="footer-brand">CONTEND</div><div class="footer-meta">W Publishing / HarperCollins Christian<br>Author Questionnaire &mdash; Philip Anthony Mitchell<br>Confidential &middot; Not for distribution</div></footer>
+</div>
+
+<script>
+function switchTab(tabId,btn){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+tabId).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+
+</body>
 </html>
