@@ -76,10 +76,12 @@
   .platform-count{font-family:'Space Mono',monospace;font-size:12px;color:var(--off-white);font-weight:700;width:80px;text-align:right;}
   .billboard-section{background:#0A0808;border-top:1px solid var(--crimson-mid);border-bottom:1px solid var(--crimson-mid);padding:80px 60px;position:relative;overflow:hidden;}
   .billboard-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 50%,rgba(139,26,26,0.12) 0%,transparent 70%);}
-  .billboard-mockup{background:#F7F4EF;border:3px solid #D4B896;border-radius:4px;aspect-ratio:14/4.8;display:flex;align-items:center;justify-content:center;flex-direction:column;position:relative;overflow:hidden;max-width:900px;margin:40px auto;box-shadow:0 8px 40px rgba(0,0,0,0.3);}
-  .billboard-word{font-family:"abolition",sans-serif;font-weight:400;font-style:normal;font-size:clamp(60px,11vw,130px);letter-spacing:8px;color:#B8872E;line-height:1;position:relative;z-index:1;}
-  .billboard-byline{font-family:'Space Mono',monospace;font-size:clamp(9px,1.2vw,14px);letter-spacing:0.4em;color:#1A1410;margin-top:12px;text-transform:uppercase;position:relative;z-index:1;}
-  .billboard-release{font-family:'Space Mono',monospace;font-size:clamp(8px,1vw,11px);letter-spacing:0.3em;color:#5C4A2A;margin-top:8px;text-transform:uppercase;position:relative;z-index:1;}
+  .billboard-mockup{background:#F5F2EC;border:4px solid #B8A080;border-radius:3px;aspect-ratio:14/5;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;max-width:960px;margin:40px auto;box-shadow:0 12px 60px rgba(0,0,0,0.5);}
+  .billboard-mockup .bb-grain{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.6;pointer-events:none;z-index:2;}
+  .billboard-mockup .bb-silhouette{position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);width:28%;height:75%;z-index:1;}
+  .billboard-word{font-family:"abolition",sans-serif;font-weight:400;font-style:normal;font-size:clamp(80px,14.5vw,170px);letter-spacing:6px;line-height:0.9;position:absolute;top:50%;left:50%;transform:translate(-50%,-54%);z-index:3;background:linear-gradient(180deg,#C8922A 0%,#8B5E1A 40%,#C8922A 70%,#E8B84B 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;white-space:nowrap;}
+  .billboard-byline{font-family:'Space Mono',monospace;font-size:clamp(7px,1vw,11px);letter-spacing:0.5em;color:#2A1F12;text-transform:uppercase;position:absolute;bottom:14%;left:50%;transform:translateX(-50%);z-index:4;white-space:nowrap;opacity:0.7;}
+  .billboard-release{font-family:'Space Mono',monospace;font-size:clamp(6px,0.8vw,9px);letter-spacing:0.4em;color:#8B6A3A;text-transform:uppercase;position:absolute;bottom:7%;left:50%;transform:translateX(-50%);z-index:4;white-space:nowrap;}
   .billboard-legs{display:flex;gap:60px;justify-content:center;margin:0 auto;}
   .billboard-leg{width:8px;height:40px;background:#8C7355;}
   .billboard-market-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--card-border);max-width:900px;margin:40px auto 0;}
@@ -305,9 +307,19 @@
     <div style="background:#100C0B;padding:20px 24px"><div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;margin-bottom:12px">// Cover Identity &mdash; Apply to All Campaign Materials</div><div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center"><div style="width:36px;height:36px;background:#B8872E;border-radius:2px"></div><div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--off-white)">Gold<br><span style="color:var(--muted)">#B8872E</span></div><div style="width:36px;height:36px;background:#F7F4EF;border:1px solid #D4B896;border-radius:2px"></div><div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--off-white)">Off-White<br><span style="color:var(--muted)">#F7F4EF</span></div><div style="width:36px;height:36px;background:#0A0A0A;border-radius:2px"></div><div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--off-white)">Shadow Black<br><span style="color:var(--muted)">#0A0A0A</span></div></div></div>
     <div style="background:#100C0B;padding:20px 24px"><div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;margin-bottom:12px">// Creative Direction &mdash; Primary Billboard</div><p style="font-size:12px;color:var(--muted);line-height:1.6">The book cover is the campaign anchor. <strong style="color:var(--off-white)">Gold on white, black as shadow.</strong> No color that isn&rsquo;t on the cover lives on the billboard. One word. Maximum size. The rest is silence.</p></div>
   </div>
-  <div class="billboard-mockup"><div class="billboard-word">CONTEND.</div><div class="billboard-byline">Philip Anthony Mitchell</div><div class="billboard-release">Available October 2026 &nbsp;&middot;&nbsp; contendthebook.com</div></div>
+  <div class="billboard-mockup">
+  <div class="bb-grain"></div>
+  <svg class="bb-silhouette" viewBox="0 0 200 260" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+    <path d="M100 260 C100 260 20 260 20 180 C20 120 45 80 70 60 C80 52 90 48 100 47 C110 48 120 52 130 60 C155 80 180 120 180 180 C180 260 100 260 100 260 Z" fill="#0F0A06"/>
+    <ellipse cx="100" cy="55" rx="32" ry="38" fill="#0F0A06"/>
+    <ellipse cx="100" cy="42" rx="22" ry="20" fill="#181008"/>
+  </svg>
+  <div class="billboard-word">CONTEND</div>
+  <div class="billboard-byline">Philip Anthony Mitchell</div>
+  <div class="billboard-release">October 2026 &nbsp;&middot;&nbsp; contendthebook.com</div>
+</div>
   <div class="billboard-legs"><div class="billboard-leg"></div><div class="billboard-leg"></div></div>
-  <div style="max-width:900px;margin:12px auto 0;text-align:center"><span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase">Concept: Stark black field. Single word. Maximum legibility at 65 mph.</span></div>
+  <div style="max-width:960px;margin:12px auto 0;text-align:center"><span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase">Concept: Book cover translated to 14&times;48. Gold on white. His silhouette rising. The word fills the board.</span></div>
   <div class="billboard-market-grid">
     <div class="billboard-market"><div class="market-city primary">Dallas, TX</div><div class="market-detail">ACCESS Dallas host city<br>DOOH near Kay Bailey Hutchison Convention Center<br>Church corridor placements</div><div class="market-type primary-tag">Primary Market</div></div>
     <div class="billboard-market"><div class="market-city">Atlanta, GA</div><div class="market-detail">Home church market<br>I-285 corridor, Greenbriar, SWATS<br>Near Morehouse, Spelman, Clark Atlanta</div><div class="market-type">Home Market</div></div>
@@ -359,7 +371,7 @@
 <section><div class="container">
   <div class="section-label">// 09 &mdash; Author Team Contacts</div><div class="section-title">WHO YOU CALL</div>
   <div class="contact-grid">
-    <div class="contact-cell"><div class="c-role">Primary Contact &mdash; Decision Maker</div><div class="c-name">Lonnell Williams</div><div class="c-email">lonnell@2819church.org</div><div class="c-note">XP (Executive Pastor), 2819 Church. <strong style="color:var(--off-white)">Primary point of contact for all marketing plan presentations and weekly status calls.</strong></div></div>
+    <div class="contact-cell"><div class="c-role">Contend Launch Operations Manager</div><div class="c-name">Lonnell Williams</div><div class="c-email">lonnell@2819church.org</div><div class="c-note">XP (Executive Pastor), 2819 Church. <strong style="color:var(--off-white)">Primary point of contact for all marketing plan presentations and weekly status calls.</strong></div></div>
     <div class="contact-cell"><div class="c-role">Author</div><div class="c-name">Philip Anthony Mitchell</div><div class="c-email">Available via Lonnell Williams</div><div class="c-note">Available for key milestone presentations. <strong style="color:var(--off-white)">Shifts to weekly calls beginning September 2026 through launch.</strong></div></div>
     <div class="contact-cell"><div class="c-role">Director of Pastoral Relations</div><div class="c-name">Jatona King</div><div class="c-email">jatona@2819church.org</div><div class="c-note">Key liaison for <strong style="color:var(--off-white)">Contend Sunday</strong> partner church activation and ministry leader outreach across the 200+ church network.</div></div>
   </div>
